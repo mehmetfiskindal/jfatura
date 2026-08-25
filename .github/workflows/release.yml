@@ -44,6 +44,12 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
 
+      - name: Verify imported GPG keys
+        run: |
+          gpg --list-secret-keys --keyid-format long
+          echo "---"
+          gpg --list-keys --keyid-format long
+
       - name: Publish
         run: ./mvnw --batch-mode -Prelease deploy
         env:
