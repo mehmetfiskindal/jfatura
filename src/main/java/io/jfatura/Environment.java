@@ -7,7 +7,6 @@ package io.jfatura;
  * <br>TEST: https://earsivportaltest.efatura.gov.tr
  */
 public enum Environment {
-
     PROD("https://earsivportal.efatura.gov.tr", "anologin", "anologin"),
     TEST("https://earsivportaltest.efatura.gov.tr", "login", "logout");
 

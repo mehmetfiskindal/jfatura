@@ -194,21 +194,24 @@ class ClientSmsTest {
         @DisplayName("[BUG FIX] returns true when GİB reports sonuc=1")
         void trueOnSonucOne() {
             gib.once("{\"data\":{\"sonuc\":\"1\"}}");
-            assertThat(client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID)).isTrue();
+            assertThat(client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID))
+                    .isTrue();
         }
 
         @Test
         @DisplayName("[BUG FIX] returns false when GİB does not report sonuc=1")
         void falseOnOtherSonuc() {
             gib.once("{\"data\":{\"sonuc\":\"0\"}}");
-            assertThat(client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID)).isFalse();
+            assertThat(client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID))
+                    .isFalse();
         }
 
         @Test
         @DisplayName("returns false when the response has no sonuc field")
         void falseWithoutSonuc() {
             gib.once("{}");
-            assertThat(client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID)).isFalse();
+            assertThat(client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID))
+                    .isFalse();
         }
 
         @Test
@@ -222,8 +225,7 @@ class ClientSmsTest {
         @Test
         @DisplayName("[BUG FIX] sends the invoices to be signed as DATA")
         void dataInvoices() {
-            List<InvoiceListItem> invoices = List.of(
-                    InvoiceListItem.of("ettn-1"), InvoiceListItem.of("ettn-2"));
+            List<InvoiceListItem> invoices = List.of(InvoiceListItem.of("ettn-1"), InvoiceListItem.of("ettn-2"));
             gib.once("{\"data\":{\"sonuc\":\"1\"}}");
             client.verifySignSMSCode(Fixtures.TOKEN, SMS_CODE, OPERATION_ID, invoices);
             assertThat(gib.call(0).jp().get("DATA"))

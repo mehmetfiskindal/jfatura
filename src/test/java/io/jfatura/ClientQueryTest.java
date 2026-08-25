@@ -1,7 +1,9 @@
 package io.jfatura;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import io.jfatura.exception.GibApiException;
 import io.jfatura.model.DateRange;
 import io.jfatura.model.InvoiceListItem;
 import io.jfatura.support.Fixtures;
@@ -100,8 +102,7 @@ class ClientQueryTest {
         @Test
         @DisplayName("returns multiple invoices")
         void multipleInvoices() {
-            InvoiceListItem second = Fixtures.invoiceListItem()
-                    .with("ettn", "aaaaaaaa-0000-1111-2222-333333333333");
+            InvoiceListItem second = Fixtures.invoiceListItem().with("ettn", "aaaaaaaa-0000-1111-2222-333333333333");
             gib.once("{\"data\":[" + jsonOf(Fixtures.invoiceListItem()) + "," + jsonOf(second) + "]}");
             List<InvoiceListItem> result = client.getAllInvoicesByDateRange(Fixtures.TOKEN, range);
             assertThat(result).hasSize(2);
@@ -113,6 +114,17 @@ class ClientQueryTest {
             gib.once("{\"data\":[]}");
             client.getAllInvoicesByDateRange(Fixtures.TOKEN, range);
             assertThat(gib.call(0).token()).isEqualTo(Fixtures.TOKEN);
+        }
+
+        @Test
+        @DisplayName("[v0.3] GİB hatası GibApiException olarak errorCode ile fırlar")
+        void gibErrorSurfacesWithErrorCode() {
+            gib.once("{\"error\":\"1\",\"messages\":[{\"type\":\"E\",\"text\":\"Oturum sonlanmış\"}]}");
+            assertThatThrownBy(() -> client.getAllInvoicesByDateRange(Fixtures.TOKEN, range))
+                    .isInstanceOf(GibApiException.class)
+                    .hasMessageContaining("Oturum sonlanmış")
+                    .extracting(e -> ((GibApiException) e).getErrorCode())
+                    .isEqualTo("1");
         }
     }
 
@@ -168,8 +180,7 @@ class ClientQueryTest {
         @DisplayName("returns result.data array")
         void returnsData() {
             gib.once("{\"data\":[" + jsonOf(Fixtures.invoiceListItem()) + "]}");
-            List<InvoiceListItem> result =
-                    client.getAllInvoicesIssuedToMeByDateRange(Fixtures.TOKEN, range);
+            List<InvoiceListItem> result = client.getAllInvoicesIssuedToMeByDateRange(Fixtures.TOKEN, range);
             assertThat(result).containsExactly(Fixtures.invoiceListItem());
         }
 

@@ -3,7 +3,7 @@ package io.jfatura;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import io.jfatura.exception.GibApiException;
+import io.jfatura.exception.GibDraftException;
 import io.jfatura.model.DraftInvoice;
 import io.jfatura.model.InvoiceDetails;
 import io.jfatura.model.InvoiceItem;
@@ -42,7 +42,8 @@ class ClientInvoiceTest {
 
         @SuppressWarnings("unchecked")
         private Map<String, Object> firstMalHizmetRow() {
-            List<Map<String, Object>> table = (List<Map<String, Object>>) jpOfCreateCall().get("malHizmetTable");
+            List<Map<String, Object>> table =
+                    (List<Map<String, Object>>) jpOfCreateCall().get("malHizmetTable");
             return table.get(0);
         }
 
@@ -83,14 +84,14 @@ class ClientInvoiceTest {
         void ignoresClientUuid() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(gib.call(Fixtures.CREATE_CALL).rawBody())
-                    .doesNotContain("11111111-2222-1333-a444-555555555555");
+            assertThat(gib.call(Fixtures.CREATE_CALL).rawBody()).doesNotContain("11111111-2222-1333-a444-555555555555");
         }
 
         @Test
         @DisplayName("[BUG FIX] returns the ETTN assigned by GİB")
         void returnsGibAssignedEttn() {
-            Fixtures.mockDraftCreation(gib,
+            Fixtures.mockDraftCreation(
+                    gib,
                     Map.of("ettn", "0f5926b2-862b-4a31-a4a1-235118b7fc11", "belgeNumarasi", "GIB2026000001644"),
                     List.of());
             DraftInvoice result = client.createDraftInvoice(Fixtures.TOKEN, Fixtures.minimalInvoice());
@@ -101,9 +102,7 @@ class ClientInvoiceTest {
         @Test
         @DisplayName("[BUG FIX] finds the new ETTN by diffing the draft list, not by taking the first row")
         void diffsDraftList() {
-            Fixtures.mockDraftCreation(gib,
-                    Map.of("ettn", "yeni-ettn"),
-                    List.of(Map.of("ettn", "onceden-var-olan")));
+            Fixtures.mockDraftCreation(gib, Map.of("ettn", "yeni-ettn"), List.of(Map.of("ettn", "onceden-var-olan")));
             DraftInvoice result = client.createDraftInvoice(Fixtures.TOKEN, Fixtures.minimalInvoice());
             assertThat(result.uuid()).isEqualTo("yeni-ettn");
         }
@@ -114,7 +113,7 @@ class ClientInvoiceTest {
             gib.once("{\"data\":[]}");
             gib.once("{\"data\":\"Ettn ya eksik ya boş ya da 36 uzunluk sınırına uymuyor.\"}");
             assertThatThrownBy(() -> client.createDraftInvoice(Fixtures.TOKEN, Fixtures.minimalInvoice()))
-                    .isInstanceOf(GibApiException.class)
+                    .isInstanceOf(GibDraftException.class)
                     .hasMessageContaining("Ettn ya eksik");
         }
 
@@ -142,7 +141,8 @@ class ClientInvoiceTest {
         void mapsDate() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.minimalInvoice());
-            assertThat(jpOfCreateCall().get("faturaTarihi")).isEqualTo(Fixtures.minimalInvoice().date());
+            assertThat(jpOfCreateCall().get("faturaTarihi"))
+                    .isEqualTo(Fixtures.minimalInvoice().date());
         }
 
         @Test
@@ -150,7 +150,8 @@ class ClientInvoiceTest {
         void mapsTime() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.minimalInvoice());
-            assertThat(jpOfCreateCall().get("saat")).isEqualTo(Fixtures.minimalInvoice().time());
+            assertThat(jpOfCreateCall().get("saat"))
+                    .isEqualTo(Fixtures.minimalInvoice().time());
         }
 
         @Test
@@ -158,7 +159,8 @@ class ClientInvoiceTest {
         void mapsTaxId() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("vknTckn")).isEqualTo(Fixtures.fullInvoice().taxIDOrTRID());
+            assertThat(jpOfCreateCall().get("vknTckn"))
+                    .isEqualTo(Fixtures.fullInvoice().taxIDOrTRID());
         }
 
         @Test
@@ -174,7 +176,8 @@ class ClientInvoiceTest {
         void mapsTitle() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("aliciUnvan")).isEqualTo(Fixtures.fullInvoice().title());
+            assertThat(jpOfCreateCall().get("aliciUnvan"))
+                    .isEqualTo(Fixtures.fullInvoice().title());
         }
 
         @Test
@@ -182,7 +185,8 @@ class ClientInvoiceTest {
         void mapsName() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("aliciAdi")).isEqualTo(Fixtures.fullInvoice().name());
+            assertThat(jpOfCreateCall().get("aliciAdi"))
+                    .isEqualTo(Fixtures.fullInvoice().name());
         }
 
         @Test
@@ -190,7 +194,8 @@ class ClientInvoiceTest {
         void mapsSurname() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("aliciSoyadi")).isEqualTo(Fixtures.fullInvoice().surname());
+            assertThat(jpOfCreateCall().get("aliciSoyadi"))
+                    .isEqualTo(Fixtures.fullInvoice().surname());
         }
 
         @Test
@@ -198,7 +203,8 @@ class ClientInvoiceTest {
         void mapsFullAddress() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("bulvarcaddesokak")).isEqualTo(Fixtures.fullInvoice().fullAddress());
+            assertThat(jpOfCreateCall().get("bulvarcaddesokak"))
+                    .isEqualTo(Fixtures.fullInvoice().fullAddress());
         }
 
         @Test
@@ -206,7 +212,8 @@ class ClientInvoiceTest {
         void mapsCity() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("sehir")).isEqualTo(Fixtures.fullInvoice().city());
+            assertThat(jpOfCreateCall().get("sehir"))
+                    .isEqualTo(Fixtures.fullInvoice().city());
         }
 
         @Test
@@ -214,7 +221,8 @@ class ClientInvoiceTest {
         void mapsCountry() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("ulke")).isEqualTo(Fixtures.fullInvoice().country());
+            assertThat(jpOfCreateCall().get("ulke"))
+                    .isEqualTo(Fixtures.fullInvoice().country());
         }
 
         @Test
@@ -222,7 +230,8 @@ class ClientInvoiceTest {
         void mapsTaxOffice() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("vergiDairesi")).isEqualTo(Fixtures.fullInvoice().taxOffice());
+            assertThat(jpOfCreateCall().get("vergiDairesi"))
+                    .isEqualTo(Fixtures.fullInvoice().taxOffice());
         }
 
         // ── BUG FIX: dispatchDate → irsaliyeTarihi ─────────────────────────────
@@ -232,7 +241,8 @@ class ClientInvoiceTest {
         void mapsDispatchDate() {
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, Fixtures.fullInvoice());
-            assertThat(jpOfCreateCall().get("irsaliyeTarihi")).isEqualTo(Fixtures.fullInvoice().dispatchDate());
+            assertThat(jpOfCreateCall().get("irsaliyeTarihi"))
+                    .isEqualTo(Fixtures.fullInvoice().dispatchDate());
         }
 
         @Test
@@ -240,8 +250,14 @@ class ClientInvoiceTest {
         void dispatchDateNotFromOtherField() {
             InvoiceDetails invoice = InvoiceDetails.builder("01/15/2024", "12:00:00")
                     .dispatchDate("02/20/2024")
-                    .items(List.of(InvoiceItem.builder().name("Test Hizmeti").price(100).build()))
-                    .grandTotal(100).totalVAT(20).grandTotalInclVAT(120).paymentTotal(120)
+                    .items(List.of(InvoiceItem.builder()
+                            .name("Test Hizmeti")
+                            .price(100)
+                            .build()))
+                    .grandTotal(100)
+                    .totalVAT(20)
+                    .grandTotalInclVAT(120)
+                    .paymentTotal(120)
                     .build();
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, invoice);
@@ -256,8 +272,14 @@ class ClientInvoiceTest {
             InvoiceDetails invoice = InvoiceDetails.builder("01/15/2024", "12:00:00")
                     .halRusumuTutari("99.00")
                     .hammaliyeTutari("10.00")
-                    .items(List.of(InvoiceItem.builder().name("Test Hizmeti").price(100).build()))
-                    .grandTotal(100).totalVAT(20).grandTotalInclVAT(120).paymentTotal(120)
+                    .items(List.of(InvoiceItem.builder()
+                            .name("Test Hizmeti")
+                            .price(100)
+                            .build()))
+                    .grandTotal(100)
+                    .totalVAT(20)
+                    .grandTotalInclVAT(120)
+                    .paymentTotal(120)
                     .build();
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, invoice);
@@ -363,8 +385,12 @@ class ClientInvoiceTest {
         @DisplayName("defaults item numeric fields to 0 when omitted")
         void defaultsItemNumericsToZero() {
             InvoiceDetails invoice = InvoiceDetails.builder("01/15/2024", "12:00:00")
-                    .items(List.of(InvoiceItem.builder().name("Minimal Item").price(50).build()))
-                    .grandTotal(100).totalVAT(20).grandTotalInclVAT(120).paymentTotal(120)
+                    .items(List.of(
+                            InvoiceItem.builder().name("Minimal Item").price(50).build()))
+                    .grandTotal(100)
+                    .totalVAT(20)
+                    .grandTotalInclVAT(120)
+                    .paymentTotal(120)
                     .build();
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, invoice);
@@ -379,8 +405,14 @@ class ClientInvoiceTest {
         void returnItemsToIadeTable() {
             InvoiceDetails invoice = InvoiceDetails.builder("01/15/2024", "12:00:00")
                     .returnItems(List.of("item1", "item2"))
-                    .items(List.of(InvoiceItem.builder().name("Test Hizmeti").price(100).build()))
-                    .grandTotal(100).totalVAT(20).grandTotalInclVAT(120).paymentTotal(120)
+                    .items(List.of(InvoiceItem.builder()
+                            .name("Test Hizmeti")
+                            .price(100)
+                            .build()))
+                    .grandTotal(100)
+                    .totalVAT(20)
+                    .grandTotalInclVAT(120)
+                    .paymentTotal(120)
                     .build();
             Fixtures.mockDraftCreation(gib);
             client.createDraftInvoice(Fixtures.TOKEN, invoice);
@@ -454,8 +486,7 @@ class ClientInvoiceTest {
         @Test
         @DisplayName("handles multiple invoices and picks the correct one")
         void picksCorrectOne() {
-            InvoiceListItem other = Fixtures.invoiceListItem()
-                    .with("ettn", "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
+            InvoiceListItem other = Fixtures.invoiceListItem().with("ettn", "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
             gib.once("{\"data\":[" + jsonOf(other) + "," + jsonOf(Fixtures.invoiceListItem()) + "]}");
             var result = client.findInvoice(Fixtures.TOKEN, draft);
             assertThat(result.orElseThrow().ettn()).isEqualTo(draft.uuid());
@@ -493,7 +524,8 @@ class ClientInvoiceTest {
             List<Map<String, Object>> imzalanacaklar =
                     (List<Map<String, Object>>) gib.call(0).jp().get("imzalanacaklar");
             assertThat(imzalanacaklar).hasSize(1);
-            assertThat(imzalanacaklar.get(0)).containsEntry("ettn", Fixtures.invoiceListItem().ettn());
+            assertThat(imzalanacaklar.get(0))
+                    .containsEntry("ettn", Fixtures.invoiceListItem().ettn());
         }
     }
 
@@ -544,8 +576,8 @@ class ClientInvoiceTest {
         @DisplayName("returns result.data")
         void returnsData() {
             gib.once("{\"data\":\"cancel-confirmation\"}");
-            var result = client.cancelDraftInvoice(Fixtures.TOKEN, reason, Fixtures.invoiceListItem());
-            assertThat(result.asText()).isEqualTo("cancel-confirmation");
+            String result = client.cancelDraftInvoice(Fixtures.TOKEN, reason, Fixtures.invoiceListItem());
+            assertThat(result).isEqualTo("cancel-confirmation");
         }
     }
 

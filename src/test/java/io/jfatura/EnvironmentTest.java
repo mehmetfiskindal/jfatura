@@ -19,7 +19,8 @@ class EnvironmentTest {
     }
 
     private FaturaClient client(Environment env) {
-        return new FaturaClient(env, org.springframework.web.client.RestClient.builder().requestFactory(gib));
+        return new FaturaClient(
+                env, org.springframework.web.client.RestClient.builder().requestFactory(gib));
     }
 
     @Test

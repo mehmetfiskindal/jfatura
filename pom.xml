@@ -13,7 +13,7 @@
 
     <groupId>io.github.mehmetfiskindal</groupId>
     <artifactId>jfatura-spring-boot-starter</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
     <name>JFatura</name>
     <description>GİB e-Arşiv Portal fatura istemcisi - Spring Boot starter (Java 25)</description>
     <url>https://github.com/mehmetfiskindal/jfatura</url>
@@ -87,6 +87,18 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Automatic-Module-Name>io.jfatura</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
@@ -154,6 +166,7 @@
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
                         </includes>
+                        <palantirJavaFormat />
                         <importOrder />
                         <removeUnusedImports />
                         <trimTrailingWhitespace />

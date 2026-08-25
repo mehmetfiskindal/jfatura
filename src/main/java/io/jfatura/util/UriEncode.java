@@ -10,15 +10,16 @@ public final class UriEncode {
 
     private static final String UNRESERVED = "-_.!~*'()";
 
-    private UriEncode() {
-    }
+    private UriEncode() {}
 
     public static String encodeURIComponent(String value) {
         StringBuilder out = new StringBuilder();
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         for (byte b : bytes) {
             char c = (char) (b & 0xFF);
-            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
+            if ((c >= 'A' && c <= 'Z')
+                    || (c >= 'a' && c <= 'z')
+                    || (c >= '0' && c <= '9')
                     || UNRESERVED.indexOf(c) >= 0) {
                 out.append(c);
             } else {

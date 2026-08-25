@@ -33,17 +33,17 @@ class ClientCompositeTest {
     @BeforeEach
     void setUp() {
         gib = new GibHttpMock();
-        client = Mockito.spy(new FaturaClient(Environment.PROD,
-                RestClient.builder().requestFactory(gib)));
+        client = Mockito.spy(
+                new FaturaClient(Environment.PROD, RestClient.builder().requestFactory(gib)));
     }
 
     private void setupHappyPath() {
         doReturn(TOKEN).when(client).getToken(USER_ID, PASSWORD);
         doReturn(Fixtures.draftInvoiceResponse()).when(client).createDraftInvoice(TOKEN, Fixtures.minimalInvoice());
-        doReturn(java.util.Optional.of(Fixtures.invoiceListItem())).when(client).findInvoice(TOKEN,
-                Fixtures.draftInvoiceResponse());
-        doReturn(new io.jfatura.api.ApiResponse()).when(client).signDraftInvoice(TOKEN,
-                Fixtures.invoiceListItem());
+        doReturn(java.util.Optional.of(Fixtures.invoiceListItem()))
+                .when(client)
+                .findInvoice(TOKEN, Fixtures.draftInvoiceResponse());
+        doReturn(new io.jfatura.api.ApiResponse()).when(client).signDraftInvoice(TOKEN, Fixtures.invoiceListItem());
     }
 
     // ─── createInvoice ─────────────────────────────────────────────────────────
@@ -96,10 +96,10 @@ class ClientCompositeTest {
         @DisplayName("does NOT call signDraftInvoice when findInvoice returns empty")
         void noSignWhenNotFound() {
             doReturn(TOKEN).when(client).getToken(USER_ID, PASSWORD);
-            doReturn(Fixtures.draftInvoiceResponse()).when(client).createDraftInvoice(TOKEN,
-                    Fixtures.minimalInvoice());
-            doReturn(java.util.Optional.<InvoiceListItem>empty()).when(client).findInvoice(TOKEN,
-                    Fixtures.draftInvoiceResponse());
+            doReturn(Fixtures.draftInvoiceResponse()).when(client).createDraftInvoice(TOKEN, Fixtures.minimalInvoice());
+            doReturn(java.util.Optional.<InvoiceListItem>empty())
+                    .when(client)
+                    .findInvoice(TOKEN, Fixtures.draftInvoiceResponse());
 
             client.createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice());
             verify(client, never()).signDraftInvoice(TOKEN, Fixtures.invoiceListItem());
@@ -126,25 +126,32 @@ class ClientCompositeTest {
         void callOrder() {
             List<String> order = new ArrayList<>();
             doAnswer(inv -> {
-                order.add("getToken");
-                return TOKEN;
-            }).when(client).getToken(USER_ID, PASSWORD);
+                        order.add("getToken");
+                        return TOKEN;
+                    })
+                    .when(client)
+                    .getToken(USER_ID, PASSWORD);
             doAnswer(inv -> {
-                order.add("createDraftInvoice");
-                return Fixtures.draftInvoiceResponse();
-            }).when(client).createDraftInvoice(TOKEN, Fixtures.minimalInvoice());
+                        order.add("createDraftInvoice");
+                        return Fixtures.draftInvoiceResponse();
+                    })
+                    .when(client)
+                    .createDraftInvoice(TOKEN, Fixtures.minimalInvoice());
             doAnswer(inv -> {
-                order.add("findInvoice");
-                return java.util.Optional.of(Fixtures.invoiceListItem());
-            }).when(client).findInvoice(TOKEN, Fixtures.draftInvoiceResponse());
+                        order.add("findInvoice");
+                        return java.util.Optional.of(Fixtures.invoiceListItem());
+                    })
+                    .when(client)
+                    .findInvoice(TOKEN, Fixtures.draftInvoiceResponse());
             doAnswer(inv -> {
-                order.add("signDraftInvoice");
-                return new io.jfatura.api.ApiResponse();
-            }).when(client).signDraftInvoice(TOKEN, Fixtures.invoiceListItem());
+                        order.add("signDraftInvoice");
+                        return new io.jfatura.api.ApiResponse();
+                    })
+                    .when(client)
+                    .signDraftInvoice(TOKEN, Fixtures.invoiceListItem());
 
             client.createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice());
-            assertThat(order).containsExactly(
-                    "getToken", "createDraftInvoice", "findInvoice", "signDraftInvoice");
+            assertThat(order).containsExactly("getToken", "createDraftInvoice", "findInvoice", "signDraftInvoice");
         }
     }
 
@@ -157,7 +164,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("returns a URL string")
         void returnsUrlString() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), true);
 
             String result = client.createInvoiceAndGetDownloadURL(USER_ID, PASSWORD, Fixtures.minimalInvoice());
@@ -167,7 +175,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("passes options through to createInvoice")
         void passesOptionsThrough() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), false);
 
             client.createInvoiceAndGetDownloadURL(USER_ID, PASSWORD, Fixtures.minimalInvoice(), false);
@@ -177,7 +186,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("calls getDownloadURL with the token, uuid and signed flag from createInvoice")
         void callsGetDownloadUrl() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), true);
 
             String url = client.createInvoiceAndGetDownloadURL(USER_ID, PASSWORD, Fixtures.minimalInvoice());
@@ -190,7 +200,8 @@ class ClientCompositeTest {
         void passesUnsignedFlagThrough() {
             // Orijinal JS'te imzasız sonuç istendiğinde bile URL imzalı üretiliyordu;
             // burada signed bayrağının birebir aktarıldığı doğrulanır.
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), false);
 
             client.createInvoiceAndGetDownloadURL(USER_ID, PASSWORD, Fixtures.minimalInvoice(), false);
@@ -209,7 +220,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("returns an HTML string")
         void returnsHtmlString() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), true);
             gib.once("{\"data\":\"<html>Fatura</html>\"}");
 
@@ -220,7 +232,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("passes options through to createInvoice")
         void passesOptionsThrough() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), false);
             gib.once("{\"data\":\"\"}");
 
@@ -231,7 +244,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("calls getInvoiceHTML with token, uuid and signed flag from createInvoice")
         void callsGetInvoiceHtml() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, true))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), true);
             gib.once("{\"data\":\"<html></html>\"}");
 
@@ -243,7 +257,8 @@ class ClientCompositeTest {
         @Test
         @DisplayName("[BUG FIX] passes the unsigned flag to getInvoiceHTML, not the default signed=true")
         void passesUnsignedFlagThrough() {
-            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false)).when(client)
+            doReturn(new CreateInvoiceResult(TOKEN, DRAFT_UUID, false))
+                    .when(client)
                     .createInvoice(USER_ID, PASSWORD, Fixtures.minimalInvoice(), false);
             gib.once("{\"data\":\"\"}");
 

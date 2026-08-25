@@ -62,12 +62,15 @@ class ClientRecipientTest {
         }
 
         @Test
-        @DisplayName("returns result.data")
-        void returnsData() {
-            gib.once("{\"data\":{\"unvan\":\"Alıcı Şirketi\",\"vknTckn\":\"" + TAX_ID + "\"}}");
+        @DisplayName("returns typed RecipientData from result.data")
+        void returnsTypedRecipientData() {
+            gib.once("{\"data\":{\"unvan\":\"Alıcı Şirketi\",\"vknTckn\":\"" + TAX_ID + "\","
+                    + "\"vergiDairesi\":\"Kadıköy VD\",\"mersisNo\":\"0123456789000011\"}}");
             var result = client.getRecipientDataByTaxIDOrTRID(Fixtures.TOKEN, TAX_ID);
-            assertThat(result.get("unvan").asText()).isEqualTo("Alıcı Şirketi");
-            assertThat(result.get("vknTckn").asText()).isEqualTo(TAX_ID);
+            assertThat(result.unvan()).isEqualTo("Alıcı Şirketi");
+            assertThat(result.vknTckn()).isEqualTo(TAX_ID);
+            assertThat(result.vergiDairesi()).isEqualTo("Kadıköy VD");
+            assertThat(result.all()).containsEntry("mersisNo", "0123456789000011");
         }
 
         @Test

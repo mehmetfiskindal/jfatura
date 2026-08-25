@@ -61,9 +61,9 @@ public final class GibHttpMock implements ClientHttpRequestFactory {
             }
             try {
                 String decoded = java.net.URLDecoder.decode(raw, StandardCharsets.UTF_8);
-                return new com.fasterxml.jackson.databind.ObjectMapper().readValue(decoded,
-                        new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
-                        });
+                return new com.fasterxml.jackson.databind.ObjectMapper()
+                        .readValue(
+                                decoded, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
             } catch (IOException e) {
                 throw new IllegalStateException("jp payload ayrıştırılamadı: " + raw, e);
             }

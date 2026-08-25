@@ -168,8 +168,7 @@ class TurkishNumberConverterTest {
     @Test
     @DisplayName("999999 → DOKUZ YÜZ DOKSAN DOKUZ BİN DOKUZ YÜZ DOKSAN DOKUZ")
     void nineHundredNinetyNineThousand() {
-        assertThat(convertNumber(999_999))
-                .isEqualTo("DOKUZ YÜZ DOKSAN DOKUZ BİN DOKUZ YÜZ DOKSAN DOKUZ");
+        assertThat(convertNumber(999_999)).isEqualTo("DOKUZ YÜZ DOKSAN DOKUZ BİN DOKUZ YÜZ DOKSAN DOKUZ");
     }
 
     // ─── milyon / milyar ───────────────────────────────────────────────────────
@@ -209,8 +208,7 @@ class TurkishNumberConverterTest {
     @Test
     @DisplayName("string '50' ile number 50 aynı sonucu verir")
     void stringEqualsNumber() {
-        assertThat(TurkishNumberConverter.convertNumber("50"))
-                .isEqualTo(TurkishNumberConverter.convertNumber(50));
+        assertThat(TurkishNumberConverter.convertNumber("50")).isEqualTo(TurkishNumberConverter.convertNumber(50));
     }
 
     @Test
@@ -282,8 +280,7 @@ class TurkishNumberConverterTest {
     @Test
     @DisplayName("0.99 → SIFIR LIRA DOKSAN DOKUZ KURUS")
     void priceNinetyNineCents() {
-        assertThat(TurkishNumberConverter.convertPriceToText(0.99))
-                .isEqualTo("SIFIR LIRA DOKSAN DOKUZ KURUS");
+        assertThat(TurkishNumberConverter.convertPriceToText(0.99)).isEqualTo("SIFIR LIRA DOKSAN DOKUZ KURUS");
     }
 
     @Test

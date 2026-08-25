@@ -25,8 +25,7 @@ public final class Fixtures {
     public static final String GIB_DRAFT_CREATED =
             "Faturanız başarıyla oluşturulmuştur. Düzenlenen Belgeler menüsünden faturanıza ulaşabilirsiniz.";
 
-    private Fixtures() {
-    }
+    private Fixtures() {}
 
     /** Minimum geçerli InvoiceDetails — yalnızca zorunlu alanlar dolu. */
     public static InvoiceDetails minimalInvoice() {

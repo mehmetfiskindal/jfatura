@@ -6,15 +6,12 @@ import java.util.StringJoiner;
 /** Sayıları büyük harfli Türkçe metne çevirir (faturanın {@code not} alanı için). */
 public final class TurkishNumberConverter {
 
-    private static final String[] ONES = {
-        "", "BİR", "İKİ", "ÜÇ", "DÖRT", "BEŞ", "ALTI", "YEDİ", "SEKİZ", "DOKUZ"
-    };
+    private static final String[] ONES = {"", "BİR", "İKİ", "ÜÇ", "DÖRT", "BEŞ", "ALTI", "YEDİ", "SEKİZ", "DOKUZ"};
     private static final String[] TENS = {
         "", "ON", "YİRMİ", "OTUZ", "KIRK", "ELLİ", "ALTMIŞ", "YETMİŞ", "SEKSEN", "DOKSAN"
     };
 
-    private TurkishNumberConverter() {
-    }
+    private TurkishNumberConverter() {}
 
     public static String convertNumber(long number) {
         return toTurkish(number);

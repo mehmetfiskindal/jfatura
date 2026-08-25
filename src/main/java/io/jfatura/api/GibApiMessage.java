@@ -18,8 +18,7 @@ public sealed interface GibApiMessage permits GibApiMessage.Plain, GibApiMessage
         return "";
     }
 
-    record Plain(String text) implements GibApiMessage {
-    }
+    record Plain(String text) implements GibApiMessage {}
 
     record Structured(String type, String text) implements GibApiMessage {
 
@@ -32,14 +31,17 @@ public sealed interface GibApiMessage permits GibApiMessage.Plain, GibApiMessage
     final class Deserializer extends com.fasterxml.jackson.databind.JsonDeserializer<GibApiMessage> {
 
         @Override
-        public GibApiMessage deserialize(com.fasterxml.jackson.core.JsonParser parser,
-                com.fasterxml.jackson.databind.DeserializationContext context) throws java.io.IOException {
+        public GibApiMessage deserialize(
+                com.fasterxml.jackson.core.JsonParser parser,
+                com.fasterxml.jackson.databind.DeserializationContext context)
+                throws java.io.IOException {
             com.fasterxml.jackson.databind.JsonNode node = parser.readValueAsTree();
             if (node.isTextual()) {
                 return new Plain(node.textValue());
             }
             if (node.isObject()) {
-                return new Structured(node.path("type").asText(""), node.path("text").asText(""));
+                return new Structured(
+                        node.path("type").asText(""), node.path("text").asText(""));
             }
             return new Plain(node.asText(""));
         }

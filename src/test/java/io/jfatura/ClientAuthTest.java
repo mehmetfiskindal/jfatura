@@ -1,7 +1,9 @@
 package io.jfatura;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import io.jfatura.exception.GibAuthException;
 import io.jfatura.support.GibHttpMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -108,8 +110,7 @@ class ClientAuthTest {
         void formUrlencodedContentType() {
             gib.once("{\"token\":\"t\"}");
             prodClient.getToken("u", "p");
-            assertThat(gib.call(0).headers().getFirst("content-type"))
-                    .contains("application/x-www-form-urlencoded");
+            assertThat(gib.call(0).headers().getFirst("content-type")).contains("application/x-www-form-urlencoded");
         }
     }
 
@@ -123,8 +124,29 @@ class ClientAuthTest {
         @DisplayName("returns the redirect URL from response.data")
         void returnsRedirectUrl() {
             gib.once("{\"data\":\"https://earsivportal.efatura.gov.tr/login.jsp\"}");
-            String result = prodClient.logout("session-abc").asText();
-            assertThat(result).isEqualTo("https://earsivportal.efatura.gov.tr/login.jsp");
+            var result = prodClient.logout("session-abc");
+            assertThat(result.redirectUrl()).isEqualTo("https://earsivportal.efatura.gov.tr/login.jsp");
+        }
+
+        @Test
+        @DisplayName("resolves redirectUrl from data.redirectUrl object form")
+        void resolvesObjectRedirectUrl() {
+            gib.once("{\"data\":{\"redirectUrl\":\"login.html\"}}");
+            var result = prodClient.logout("tok");
+            assertThat(result.redirectUrl()).isEqualTo("login.html");
+            assertThat(result.raw().get("redirectUrl").asText()).isEqualTo("login.html");
+        }
+
+        @Test
+        @DisplayName("[v0.3] login error surfaces as GibAuthException with errorCode")
+        void authErrorThrowsGibAuthException() {
+            gib.once(
+                    "{\"error\":\"1\",\"messages\":[{\"type\":\"E\",\"text\":\"Kullanıcı kodu ya da parola hatalı\"}]}");
+            assertThatThrownBy(() -> prodClient.getToken("u", "wrong"))
+                    .isInstanceOf(GibAuthException.class)
+                    .hasMessageContaining("parola hatalı")
+                    .extracting(e -> ((GibAuthException) e).getErrorCode())
+                    .isEqualTo("1");
         }
 
         @Test

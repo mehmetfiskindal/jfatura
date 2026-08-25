@@ -11,6 +11,10 @@ import org.springframework.web.client.RestClient;
 
 /**
  * {@link FaturaClient} bean'ini otomatik yapılandırır.
+ *
+ * <p>Dışarıdan bir {@link RestClient.Builder} bean'i gelirse transport
+ * (timeout dâhil) ona devredilir; {@code jfatura.connect-timeout} /
+ * {@code jfatura.read-timeout} yalnızca varsayılan transport için geçerlidir.
  */
 @AutoConfiguration
 @ConditionalOnClass(FaturaClient.class)
@@ -19,11 +23,28 @@ public class JFaturaAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public FaturaClient faturaClient(JFaturaProperties properties,
+    public FaturaClient faturaClient(
+            JFaturaProperties properties,
             org.springframework.beans.factory.ObjectProvider<RestClient.Builder> builderProvider,
             org.springframework.beans.factory.ObjectProvider<ObjectMapper> objectMapperProvider) {
-        RestClient.Builder builder = builderProvider.getIfAvailable(RestClient::builder);
-        ObjectMapper objectMapper = objectMapperProvider.getIfAvailable(ObjectMapper::new);
-        return new FaturaClient(properties.getEnvironment(), builder, objectMapper);
+        FaturaClient.Builder clientBuilder = FaturaClient.builder()
+                .environment(properties.getEnvironment())
+                .restClient(builderProvider.getIfAvailable(RestClient::builder))
+                .objectMapper(objectMapperProvider.getIfAvailable(ObjectMapper::new));
+        if (properties.getConnectTimeout() != null && builderProvider.getIfAvailable() == null) {
+            clientBuilder.connectTimeout(properties.getConnectTimeout());
+        }
+        if (properties.getReadTimeout() != null && builderProvider.getIfAvailable() == null) {
+            clientBuilder.readTimeout(properties.getReadTimeout());
+        }
+        if (properties.getLoginRetry().getMaxAttempts() > 1) {
+            clientBuilder.loginRetry(
+                    properties.getLoginRetry().getMaxAttempts(),
+                    properties.getLoginRetry().getDelay());
+        }
+        if (properties.getTokenCache().isEnabled()) {
+            clientBuilder.tokenCache(properties.getTokenCache().getTtl());
+        }
+        return clientBuilder.build();
     }
 }

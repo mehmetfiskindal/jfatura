@@ -8,8 +8,21 @@ import org.jspecify.annotations.Nullable;
  * Fatura kalemi. TS paketindeki tuhaf büyük harfli alan adları
  * ({@code VATRate}, {@code VATAmount}, {@code VATAmountOfTax}) korunmuştur.
  */
-@JsonPropertyOrder({"name", "quantity", "unitType", "unitPrice", "price", "discountRate",
-    "discountAmount", "discountReason", "discount", "VATRate", "VATAmount", "VATAmountOfTax", "taxRate"})
+@JsonPropertyOrder({
+    "name",
+    "quantity",
+    "unitType",
+    "unitPrice",
+    "price",
+    "discountRate",
+    "discountAmount",
+    "discountReason",
+    "discount",
+    "VATRate",
+    "VATAmount",
+    "VATAmountOfTax",
+    "taxRate"
+})
 public record InvoiceItem(
         String name,
         @Nullable Integer quantity,
@@ -25,8 +38,21 @@ public record InvoiceItem(
         @JsonProperty("VATAmountOfTax") @Nullable Double vatAmountOfTax,
         @Nullable Double taxRate) {
 
-    @JsonPropertyOrder({"name", "quantity", "unitType", "unitPrice", "price", "discountRate",
-        "discountAmount", "discountReason", "discount", "VATRate", "VATAmount", "VATAmountOfTax", "taxRate"})
+    @JsonPropertyOrder({
+        "name",
+        "quantity",
+        "unitType",
+        "unitPrice",
+        "price",
+        "discountRate",
+        "discountAmount",
+        "discountReason",
+        "discount",
+        "VATRate",
+        "VATAmount",
+        "VATAmountOfTax",
+        "taxRate"
+    })
     public static final class Builder {
 
         private String name;
@@ -112,8 +138,20 @@ public record InvoiceItem(
             if (name == null || price == null) {
                 throw new IllegalStateException("InvoiceItem için name ve price zorunludur");
             }
-            return new InvoiceItem(name, quantity, unitType, unitPrice, price, discountRate,
-                    discountAmount, discountReason, discount, vatRate, vatAmount, vatAmountOfTax, taxRate);
+            return new InvoiceItem(
+                    name,
+                    quantity,
+                    unitType,
+                    unitPrice,
+                    price,
+                    discountRate,
+                    discountAmount,
+                    discountReason,
+                    discount,
+                    vatRate,
+                    vatAmount,
+                    vatAmountOfTax,
+                    taxRate);
         }
     }
 

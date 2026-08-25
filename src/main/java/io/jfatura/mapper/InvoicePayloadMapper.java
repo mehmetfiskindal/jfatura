@@ -20,8 +20,7 @@ import org.jspecify.annotations.Nullable;
  */
 public final class InvoicePayloadMapper {
 
-    private InvoicePayloadMapper() {
-    }
+    private InvoicePayloadMapper() {}
 
     public static Map<String, Object> toPayload(InvoiceDetails d) {
         Map<String, Object> p = new LinkedHashMap<>();

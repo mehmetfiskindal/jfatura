@@ -68,21 +68,24 @@ class ClientUserTest {
         @DisplayName("maps unvan → title")
         void unvan() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).title()).isEqualTo(Fixtures.rawUserData().unvan());
+            assertThat(client.getUserData(Fixtures.TOKEN).title())
+                    .isEqualTo(Fixtures.rawUserData().unvan());
         }
 
         @Test
         @DisplayName("maps ad → name")
         void ad() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).name()).isEqualTo(Fixtures.rawUserData().ad());
+            assertThat(client.getUserData(Fixtures.TOKEN).name())
+                    .isEqualTo(Fixtures.rawUserData().ad());
         }
 
         @Test
         @DisplayName("maps soyad → surname")
         void soyad() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).surname()).isEqualTo(Fixtures.rawUserData().soyad());
+            assertThat(client.getUserData(Fixtures.TOKEN).surname())
+                    .isEqualTo(Fixtures.rawUserData().soyad());
         }
 
         @Test
@@ -145,21 +148,24 @@ class ClientUserTest {
         @DisplayName("maps kasaba → town")
         void kasaba() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).town()).isEqualTo(Fixtures.rawUserData().kasaba());
+            assertThat(client.getUserData(Fixtures.TOKEN).town())
+                    .isEqualTo(Fixtures.rawUserData().kasaba());
         }
 
         @Test
         @DisplayName("maps ilce → district")
         void ilce() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).district()).isEqualTo(Fixtures.rawUserData().ilce());
+            assertThat(client.getUserData(Fixtures.TOKEN).district())
+                    .isEqualTo(Fixtures.rawUserData().ilce());
         }
 
         @Test
         @DisplayName("maps il → city")
         void il() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).city()).isEqualTo(Fixtures.rawUserData().il());
+            assertThat(client.getUserData(Fixtures.TOKEN).city())
+                    .isEqualTo(Fixtures.rawUserData().il());
         }
 
         @Test
@@ -174,7 +180,8 @@ class ClientUserTest {
         @DisplayName("maps ulke → country")
         void ulke() {
             gib.once("{\"data\":" + rawUserJson() + "}");
-            assertThat(client.getUserData(Fixtures.TOKEN).country()).isEqualTo(Fixtures.rawUserData().ulke());
+            assertThat(client.getUserData(Fixtures.TOKEN).country())
+                    .isEqualTo(Fixtures.rawUserData().ulke());
         }
 
         @Test

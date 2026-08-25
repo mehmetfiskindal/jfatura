@@ -23,6 +23,7 @@ public final class ApiResponse {
     private @Nullable String token;
     /** GİB API hata kodu — "0" veya yoksa başarılı, "1" hata */
     private @Nullable String error;
+
     private List<GibApiMessage> messages = List.of();
     private final Map<String, Object> extra = new LinkedHashMap<>();
 
@@ -105,7 +106,7 @@ public final class ApiResponse {
 
     @Override
     public String toString() {
-        return "ApiResponse{data=" + data + ", oid=" + oid + ", token=" + token
-                + ", error=" + error + ", extra=" + extra.keySet() + "}";
+        return "ApiResponse{data=" + data + ", oid=" + oid + ", token=" + token + ", error=" + error + ", extra="
+                + extra.keySet() + "}";
     }
 }

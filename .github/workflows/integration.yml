@@ -1,0 +1,36 @@
+name: Integration (GİB TEST)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  gib-test-portal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      # CI=true otomatik set edilir; IT'lerin koşması için bypass bayrağı şart
+      JFATURA_IT_RUN: "true"
+      GIB_TEST_USER: ${{ secrets.GIB_TEST_USER }}
+      GIB_TEST_PASS: ${{ secrets.GIB_TEST_PASS }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Run integration tests against live GİB TEST portal
+        run: ./mvnw --batch-mode test-compile failsafe:integration-test failsafe:verify
+
+      - name: Upload failsafe reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failsafe-reports
+          path: target/failsafe-reports/

@@ -5,8 +5,7 @@ import java.util.UUID;
 /** GİB isteklerinde kullanılan {@code callid} üreticisi. */
 public final class Uuids {
 
-    private Uuids() {
-    }
+    private Uuids() {}
 
     public static String newCallId() {
         return UUID.randomUUID().toString();

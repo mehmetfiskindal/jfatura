@@ -27,5 +27,4 @@ public record RawUserData(
         @Nullable String faksNo,
         @Nullable String ePostaAdresi,
         @Nullable String webSitesiAdresi,
-        @Nullable String isMerkezi) {
-}
+        @Nullable String isMerkezi) {}

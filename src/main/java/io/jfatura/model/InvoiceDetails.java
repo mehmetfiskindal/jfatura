@@ -222,117 +222,512 @@ public record InvoiceDetails(
             this.time = time;
         }
 
-        public Builder uuid(String v) { this.uuid = v; return this; }
-        public Builder documentNumber(String v) { this.documentNumber = v; return this; }
-        public Builder invoiceType(String v) { this.invoiceType = v; return this; }
-        public Builder hangiTip(String v) { this.hangiTip = v; return this; }
-        public Builder currency(String v) { this.currency = v; return this; }
-        public Builder currencyRate(String v) { this.currencyRate = v; return this; }
-        public Builder orderNumber(String v) { this.orderNumber = v; return this; }
-        public Builder orderDate(String v) { this.orderDate = v; return this; }
-        public Builder dispatchNumber(String v) { this.dispatchNumber = v; return this; }
-        public Builder dispatchDate(String v) { this.dispatchDate = v; return this; }
-        public Builder slipNumber(String v) { this.slipNumber = v; return this; }
-        public Builder slipDate(String v) { this.slipDate = v; return this; }
-        public Builder slipTime(String v) { this.slipTime = v; return this; }
-        public Builder slipType(String v) { this.slipType = v; return this; }
-        public Builder zReportNumber(String v) { this.zReportNumber = v; return this; }
-        public Builder okcSerialNumber(String v) { this.okcSerialNumber = v; return this; }
-        public Builder taxIDOrTRID(String v) { this.taxIDOrTRID = v; return this; }
-        public Builder title(String v) { this.title = v; return this; }
-        public Builder name(String v) { this.name = v; return this; }
-        public Builder surname(String v) { this.surname = v; return this; }
-        public Builder fullAddress(String v) { this.fullAddress = v; return this; }
-        public Builder buildingName(String v) { this.buildingName = v; return this; }
-        public Builder buildingNumber(String v) { this.buildingNumber = v; return this; }
-        public Builder doorNumber(String v) { this.doorNumber = v; return this; }
-        public Builder town(String v) { this.town = v; return this; }
-        public Builder district(String v) { this.district = v; return this; }
-        public Builder city(String v) { this.city = v; return this; }
-        public Builder country(String v) { this.country = v; return this; }
-        public Builder zipCode(String v) { this.zipCode = v; return this; }
-        public Builder phoneNumber(String v) { this.phoneNumber = v; return this; }
-        public Builder faxNumber(String v) { this.faxNumber = v; return this; }
-        public Builder email(String v) { this.email = v; return this; }
-        public Builder webSite(String v) { this.webSite = v; return this; }
-        public Builder taxOffice(String v) { this.taxOffice = v; return this; }
-        public Builder taxType(String v) { this.taxType = v; return this; }
-        public Builder commissionRate(Double v) { this.commissionRate = v; return this; }
-        public Builder freightRate(Double v) { this.freightRate = v; return this; }
-        public Builder hammaliyeOrani(Double v) { this.hammaliyeOrani = v; return this; }
-        public Builder nakliyeOrani(Double v) { this.nakliyeOrani = v; return this; }
-        public Builder komisyonTutari(String v) { this.komisyonTutari = v; return this; }
-        public Builder navlunTutari(String v) { this.navlunTutari = v; return this; }
-        public Builder hammaliyeTutari(String v) { this.hammaliyeTutari = v; return this; }
-        public Builder nakliyeTutari(String v) { this.nakliyeTutari = v; return this; }
-        public Builder komisyonKDVOrani(Double v) { this.komisyonKDVOrani = v; return this; }
-        public Builder navlunKDVOrani(Double v) { this.navlunKDVOrani = v; return this; }
-        public Builder hammaliyeKDVOrani(Double v) { this.hammaliyeKDVOrani = v; return this; }
-        public Builder nakliyeKDVOrani(Double v) { this.nakliyeKDVOrani = v; return this; }
-        public Builder komisyonKDVTutari(String v) { this.komisyonKDVTutari = v; return this; }
-        public Builder navlunKDVTutari(String v) { this.navlunKDVTutari = v; return this; }
-        public Builder hammaliyeKDVTutari(String v) { this.hammaliyeKDVTutari = v; return this; }
-        public Builder nakliyeKDVTutari(String v) { this.nakliyeKDVTutari = v; return this; }
-        public Builder gelirVergisiOrani(Double v) { this.gelirVergisiOrani = v; return this; }
-        public Builder bagkurTevkifatiOrani(Double v) { this.bagkurTevkifatiOrani = v; return this; }
-        public Builder gelirVergisiTevkifatiTutari(String v) { this.gelirVergisiTevkifatiTutari = v; return this; }
-        public Builder bagkurTevkifatiTutari(String v) { this.bagkurTevkifatiTutari = v; return this; }
-        public Builder halRusumuOrani(Double v) { this.halRusumuOrani = v; return this; }
-        public Builder halRusumuTutari(String v) { this.halRusumuTutari = v; return this; }
-        public Builder halRusumuKDVOrani(Double v) { this.halRusumuKDVOrani = v; return this; }
-        public Builder halRusumuKDVTutari(String v) { this.halRusumuKDVTutari = v; return this; }
-        public Builder ticaretBorsasiOrani(Double v) { this.ticaretBorsasiOrani = v; return this; }
-        public Builder ticaretBorsasiTutari(String v) { this.ticaretBorsasiTutari = v; return this; }
-        public Builder ticaretBorsasiKDVOrani(Double v) { this.ticaretBorsasiKDVOrani = v; return this; }
-        public Builder ticaretBorsasiKDVTutari(String v) { this.ticaretBorsasiKDVTutari = v; return this; }
-        public Builder milliSavunmaFonuOrani(Double v) { this.milliSavunmaFonuOrani = v; return this; }
-        public Builder milliSavunmaFonuTutari(String v) { this.milliSavunmaFonuTutari = v; return this; }
-        public Builder milliSavunmaFonuKDVOrani(Double v) { this.milliSavunmaFonuKDVOrani = v; return this; }
-        public Builder milliSavunmaFonuKDVTutari(String v) { this.milliSavunmaFonuKDVTutari = v; return this; }
-        public Builder digerOrani(Double v) { this.digerOrani = v; return this; }
-        public Builder digerTutari(String v) { this.digerTutari = v; return this; }
-        public Builder digerKDVOrani(Double v) { this.digerKDVOrani = v; return this; }
-        public Builder digerKDVTutari(String v) { this.digerKDVTutari = v; return this; }
-        public Builder specialTaxBaseAmount(String v) { this.specialTaxBaseAmount = v; return this; }
-        public Builder specialTaxBaseRate(Double v) { this.specialTaxBaseRate = v; return this; }
-        public Builder specialTaxBaseTaxAmount(Double v) { this.specialTaxBaseTaxAmount = v; return this; }
-        public Builder toplamMasraflar(String v) { this.toplamMasraflar = v; return this; }
-        public Builder totalDiscount(Double v) { this.totalDiscount = v; return this; }
+        public Builder uuid(String v) {
+            this.uuid = v;
+            return this;
+        }
 
-        public Builder grandTotal(double v) { this.grandTotal = v; this.grandTotalSet = true; return this; }
-        public Builder totalVAT(double v) { this.totalVAT = v; this.totalVatSet = true; return this; }
-        public Builder grandTotalInclVAT(double v) { this.grandTotalInclVAT = v; this.grandTotalInclVatSet = true; return this; }
-        public Builder paymentTotal(double v) { this.paymentTotal = v; this.paymentTotalSet = true; return this; }
+        public Builder documentNumber(String v) {
+            this.documentNumber = v;
+            return this;
+        }
 
-        public Builder items(List<InvoiceItem> v) { this.items = v; return this; }
-        public Builder returnItems(List<Object> v) { this.returnItems = v; return this; }
+        public Builder invoiceType(String v) {
+            this.invoiceType = v;
+            return this;
+        }
+
+        public Builder hangiTip(String v) {
+            this.hangiTip = v;
+            return this;
+        }
+
+        public Builder currency(String v) {
+            this.currency = v;
+            return this;
+        }
+
+        public Builder currencyRate(String v) {
+            this.currencyRate = v;
+            return this;
+        }
+
+        public Builder orderNumber(String v) {
+            this.orderNumber = v;
+            return this;
+        }
+
+        public Builder orderDate(String v) {
+            this.orderDate = v;
+            return this;
+        }
+
+        public Builder dispatchNumber(String v) {
+            this.dispatchNumber = v;
+            return this;
+        }
+
+        public Builder dispatchDate(String v) {
+            this.dispatchDate = v;
+            return this;
+        }
+
+        public Builder slipNumber(String v) {
+            this.slipNumber = v;
+            return this;
+        }
+
+        public Builder slipDate(String v) {
+            this.slipDate = v;
+            return this;
+        }
+
+        public Builder slipTime(String v) {
+            this.slipTime = v;
+            return this;
+        }
+
+        public Builder slipType(String v) {
+            this.slipType = v;
+            return this;
+        }
+
+        public Builder zReportNumber(String v) {
+            this.zReportNumber = v;
+            return this;
+        }
+
+        public Builder okcSerialNumber(String v) {
+            this.okcSerialNumber = v;
+            return this;
+        }
+
+        public Builder taxIDOrTRID(String v) {
+            this.taxIDOrTRID = v;
+            return this;
+        }
+
+        public Builder title(String v) {
+            this.title = v;
+            return this;
+        }
+
+        public Builder name(String v) {
+            this.name = v;
+            return this;
+        }
+
+        public Builder surname(String v) {
+            this.surname = v;
+            return this;
+        }
+
+        public Builder fullAddress(String v) {
+            this.fullAddress = v;
+            return this;
+        }
+
+        public Builder buildingName(String v) {
+            this.buildingName = v;
+            return this;
+        }
+
+        public Builder buildingNumber(String v) {
+            this.buildingNumber = v;
+            return this;
+        }
+
+        public Builder doorNumber(String v) {
+            this.doorNumber = v;
+            return this;
+        }
+
+        public Builder town(String v) {
+            this.town = v;
+            return this;
+        }
+
+        public Builder district(String v) {
+            this.district = v;
+            return this;
+        }
+
+        public Builder city(String v) {
+            this.city = v;
+            return this;
+        }
+
+        public Builder country(String v) {
+            this.country = v;
+            return this;
+        }
+
+        public Builder zipCode(String v) {
+            this.zipCode = v;
+            return this;
+        }
+
+        public Builder phoneNumber(String v) {
+            this.phoneNumber = v;
+            return this;
+        }
+
+        public Builder faxNumber(String v) {
+            this.faxNumber = v;
+            return this;
+        }
+
+        public Builder email(String v) {
+            this.email = v;
+            return this;
+        }
+
+        public Builder webSite(String v) {
+            this.webSite = v;
+            return this;
+        }
+
+        public Builder taxOffice(String v) {
+            this.taxOffice = v;
+            return this;
+        }
+
+        public Builder taxType(String v) {
+            this.taxType = v;
+            return this;
+        }
+
+        public Builder commissionRate(Double v) {
+            this.commissionRate = v;
+            return this;
+        }
+
+        public Builder freightRate(Double v) {
+            this.freightRate = v;
+            return this;
+        }
+
+        public Builder hammaliyeOrani(Double v) {
+            this.hammaliyeOrani = v;
+            return this;
+        }
+
+        public Builder nakliyeOrani(Double v) {
+            this.nakliyeOrani = v;
+            return this;
+        }
+
+        public Builder komisyonTutari(String v) {
+            this.komisyonTutari = v;
+            return this;
+        }
+
+        public Builder navlunTutari(String v) {
+            this.navlunTutari = v;
+            return this;
+        }
+
+        public Builder hammaliyeTutari(String v) {
+            this.hammaliyeTutari = v;
+            return this;
+        }
+
+        public Builder nakliyeTutari(String v) {
+            this.nakliyeTutari = v;
+            return this;
+        }
+
+        public Builder komisyonKDVOrani(Double v) {
+            this.komisyonKDVOrani = v;
+            return this;
+        }
+
+        public Builder navlunKDVOrani(Double v) {
+            this.navlunKDVOrani = v;
+            return this;
+        }
+
+        public Builder hammaliyeKDVOrani(Double v) {
+            this.hammaliyeKDVOrani = v;
+            return this;
+        }
+
+        public Builder nakliyeKDVOrani(Double v) {
+            this.nakliyeKDVOrani = v;
+            return this;
+        }
+
+        public Builder komisyonKDVTutari(String v) {
+            this.komisyonKDVTutari = v;
+            return this;
+        }
+
+        public Builder navlunKDVTutari(String v) {
+            this.navlunKDVTutari = v;
+            return this;
+        }
+
+        public Builder hammaliyeKDVTutari(String v) {
+            this.hammaliyeKDVTutari = v;
+            return this;
+        }
+
+        public Builder nakliyeKDVTutari(String v) {
+            this.nakliyeKDVTutari = v;
+            return this;
+        }
+
+        public Builder gelirVergisiOrani(Double v) {
+            this.gelirVergisiOrani = v;
+            return this;
+        }
+
+        public Builder bagkurTevkifatiOrani(Double v) {
+            this.bagkurTevkifatiOrani = v;
+            return this;
+        }
+
+        public Builder gelirVergisiTevkifatiTutari(String v) {
+            this.gelirVergisiTevkifatiTutari = v;
+            return this;
+        }
+
+        public Builder bagkurTevkifatiTutari(String v) {
+            this.bagkurTevkifatiTutari = v;
+            return this;
+        }
+
+        public Builder halRusumuOrani(Double v) {
+            this.halRusumuOrani = v;
+            return this;
+        }
+
+        public Builder halRusumuTutari(String v) {
+            this.halRusumuTutari = v;
+            return this;
+        }
+
+        public Builder halRusumuKDVOrani(Double v) {
+            this.halRusumuKDVOrani = v;
+            return this;
+        }
+
+        public Builder halRusumuKDVTutari(String v) {
+            this.halRusumuKDVTutari = v;
+            return this;
+        }
+
+        public Builder ticaretBorsasiOrani(Double v) {
+            this.ticaretBorsasiOrani = v;
+            return this;
+        }
+
+        public Builder ticaretBorsasiTutari(String v) {
+            this.ticaretBorsasiTutari = v;
+            return this;
+        }
+
+        public Builder ticaretBorsasiKDVOrani(Double v) {
+            this.ticaretBorsasiKDVOrani = v;
+            return this;
+        }
+
+        public Builder ticaretBorsasiKDVTutari(String v) {
+            this.ticaretBorsasiKDVTutari = v;
+            return this;
+        }
+
+        public Builder milliSavunmaFonuOrani(Double v) {
+            this.milliSavunmaFonuOrani = v;
+            return this;
+        }
+
+        public Builder milliSavunmaFonuTutari(String v) {
+            this.milliSavunmaFonuTutari = v;
+            return this;
+        }
+
+        public Builder milliSavunmaFonuKDVOrani(Double v) {
+            this.milliSavunmaFonuKDVOrani = v;
+            return this;
+        }
+
+        public Builder milliSavunmaFonuKDVTutari(String v) {
+            this.milliSavunmaFonuKDVTutari = v;
+            return this;
+        }
+
+        public Builder digerOrani(Double v) {
+            this.digerOrani = v;
+            return this;
+        }
+
+        public Builder digerTutari(String v) {
+            this.digerTutari = v;
+            return this;
+        }
+
+        public Builder digerKDVOrani(Double v) {
+            this.digerKDVOrani = v;
+            return this;
+        }
+
+        public Builder digerKDVTutari(String v) {
+            this.digerKDVTutari = v;
+            return this;
+        }
+
+        public Builder specialTaxBaseAmount(String v) {
+            this.specialTaxBaseAmount = v;
+            return this;
+        }
+
+        public Builder specialTaxBaseRate(Double v) {
+            this.specialTaxBaseRate = v;
+            return this;
+        }
+
+        public Builder specialTaxBaseTaxAmount(Double v) {
+            this.specialTaxBaseTaxAmount = v;
+            return this;
+        }
+
+        public Builder toplamMasraflar(String v) {
+            this.toplamMasraflar = v;
+            return this;
+        }
+
+        public Builder totalDiscount(Double v) {
+            this.totalDiscount = v;
+            return this;
+        }
+
+        public Builder grandTotal(double v) {
+            this.grandTotal = v;
+            this.grandTotalSet = true;
+            return this;
+        }
+
+        public Builder totalVAT(double v) {
+            this.totalVAT = v;
+            this.totalVatSet = true;
+            return this;
+        }
+
+        public Builder grandTotalInclVAT(double v) {
+            this.grandTotalInclVAT = v;
+            this.grandTotalInclVatSet = true;
+            return this;
+        }
+
+        public Builder paymentTotal(double v) {
+            this.paymentTotal = v;
+            this.paymentTotalSet = true;
+            return this;
+        }
+
+        public Builder items(List<InvoiceItem> v) {
+            this.items = v;
+            return this;
+        }
+
+        public Builder returnItems(List<Object> v) {
+            this.returnItems = v;
+            return this;
+        }
 
         public InvoiceDetails build() {
             if (!grandTotalSet || !totalVatSet || !grandTotalInclVatSet || !paymentTotalSet) {
-                throw new IllegalStateException(
-                        "grandTotal, totalVAT, grandTotalInclVAT ve paymentTotal zorunludur");
+                throw new IllegalStateException("grandTotal, totalVAT, grandTotalInclVAT ve paymentTotal zorunludur");
             }
             if (items.isEmpty()) {
                 throw new IllegalStateException("items en az bir kalem içermelidir");
             }
-            return new InvoiceDetails(uuid, documentNumber, date, time, invoiceType, hangiTip,
-                    currency, currencyRate, orderNumber, orderDate, dispatchNumber, dispatchDate,
-                    slipNumber, slipDate, slipTime, slipType, zReportNumber, okcSerialNumber,
-                    taxIDOrTRID, title, name, surname, fullAddress, buildingName, buildingNumber,
-                    doorNumber, town, district, city, country, zipCode, phoneNumber, faxNumber,
-                    email, webSite, taxOffice, taxType,
-                    commissionRate, freightRate, hammaliyeOrani, nakliyeOrani,
-                    komisyonTutari, navlunTutari, hammaliyeTutari, nakliyeTutari,
-                    komisyonKDVOrani, navlunKDVOrani, hammaliyeKDVOrani, nakliyeKDVOrani,
-                    komisyonKDVTutari, navlunKDVTutari, hammaliyeKDVTutari, nakliyeKDVTutari,
-                    gelirVergisiOrani, bagkurTevkifatiOrani, gelirVergisiTevkifatiTutari, bagkurTevkifatiTutari,
-                    halRusumuOrani, halRusumuTutari, halRusumuKDVOrani, halRusumuKDVTutari,
-                    ticaretBorsasiOrani, ticaretBorsasiTutari, ticaretBorsasiKDVOrani, ticaretBorsasiKDVTutari,
-                    milliSavunmaFonuOrani, milliSavunmaFonuTutari, milliSavunmaFonuKDVOrani, milliSavunmaFonuKDVTutari,
-                    digerOrani, digerTutari, digerKDVOrani, digerKDVTutari,
-                    specialTaxBaseAmount, specialTaxBaseRate, specialTaxBaseTaxAmount,
-                    toplamMasraflar, grandTotal, totalDiscount, totalVAT, grandTotalInclVAT, paymentTotal,
-                    items, returnItems);
+            return new InvoiceDetails(
+                    uuid,
+                    documentNumber,
+                    date,
+                    time,
+                    invoiceType,
+                    hangiTip,
+                    currency,
+                    currencyRate,
+                    orderNumber,
+                    orderDate,
+                    dispatchNumber,
+                    dispatchDate,
+                    slipNumber,
+                    slipDate,
+                    slipTime,
+                    slipType,
+                    zReportNumber,
+                    okcSerialNumber,
+                    taxIDOrTRID,
+                    title,
+                    name,
+                    surname,
+                    fullAddress,
+                    buildingName,
+                    buildingNumber,
+                    doorNumber,
+                    town,
+                    district,
+                    city,
+                    country,
+                    zipCode,
+                    phoneNumber,
+                    faxNumber,
+                    email,
+                    webSite,
+                    taxOffice,
+                    taxType,
+                    commissionRate,
+                    freightRate,
+                    hammaliyeOrani,
+                    nakliyeOrani,
+                    komisyonTutari,
+                    navlunTutari,
+                    hammaliyeTutari,
+                    nakliyeTutari,
+                    komisyonKDVOrani,
+                    navlunKDVOrani,
+                    hammaliyeKDVOrani,
+                    nakliyeKDVOrani,
+                    komisyonKDVTutari,
+                    navlunKDVTutari,
+                    hammaliyeKDVTutari,
+                    nakliyeKDVTutari,
+                    gelirVergisiOrani,
+                    bagkurTevkifatiOrani,
+                    gelirVergisiTevkifatiTutari,
+                    bagkurTevkifatiTutari,
+                    halRusumuOrani,
+                    halRusumuTutari,
+                    halRusumuKDVOrani,
+                    halRusumuKDVTutari,
+                    ticaretBorsasiOrani,
+                    ticaretBorsasiTutari,
+                    ticaretBorsasiKDVOrani,
+                    ticaretBorsasiKDVTutari,
+                    milliSavunmaFonuOrani,
+                    milliSavunmaFonuTutari,
+                    milliSavunmaFonuKDVOrani,
+                    milliSavunmaFonuKDVTutari,
+                    digerOrani,
+                    digerTutari,
+                    digerKDVOrani,
+                    digerKDVTutari,
+                    specialTaxBaseAmount,
+                    specialTaxBaseRate,
+                    specialTaxBaseTaxAmount,
+                    toplamMasraflar,
+                    grandTotal,
+                    totalDiscount,
+                    totalVAT,
+                    grandTotalInclVAT,
+                    paymentTotal,
+                    items,
+                    returnItems);
         }
     }
 }

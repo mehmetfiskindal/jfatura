@@ -3,6 +3,10 @@
 GİB e-Arşiv sistemi üzerinde fatura oluşturmanızı sağlayan **Java 25 + Spring Boot 4** starter'ı.
 ([Fatura.js](https://github.com/f/fatura) TypeScript paketinin birebir Java portu; aynı özellikler, aynı testler.)
 
+> **v0.3.0:** `FaturaClient.builder()` ile timeout/login-retry/token-cache, tip güvenli sonuçlar
+> (`LogoutResult`, `RecipientData`, `cancelDraftInvoice → String`) ve ayrıntılı hata sınıfları
+> (`GibAuthException`, `GibDraftException`). Sürüm notları için aşağıdaki bölümlere bakın.
+
 ### Alternatifler
 
 | Dil | Repo | Geliştirici |
@@ -30,14 +34,14 @@ GİB e-Arşiv sistemi üzerinde fatura oluşturmanızı sağlayan **Java 25 + Sp
 <dependency>
     <groupId>io.github.mehmetfiskindal</groupId>
     <artifactId>jfatura-spring-boot-starter</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
 **Gradle:**
 
 ```groovy
-implementation 'io.github.mehmetfiskindal:jfatura-spring-boot-starter:0.2.1'
+implementation 'io.github.mehmetfiskindal:jfatura-spring-boot-starter:0.3.0'
 ```
 
 **Java 25 veya üzeri** gereklidir.
@@ -69,7 +73,15 @@ Test ortamı (`https://earsivportaltest.efatura.gov.tr`) ya da Spring dışı ku
 
 ```java
 FaturaClient client = FaturaClient.create(Environment.TEST);
-// veya
+// veya builder ile tüm ayarlar:
+FaturaClient client = FaturaClient.builder()
+        .environment(Environment.TEST)
+        .connectTimeout(Duration.ofSeconds(10))
+        .readTimeout(Duration.ofSeconds(30))
+        .loginRetry(5, Duration.ofSeconds(3))     // oturum kilidi hatalarında tekrar
+        .tokenCache(Duration.ofMinutes(30))       // kimlik bazlı token önbelleği
+        .build();
+// veya kısa yol
 FaturaClient client = new FaturaClient(); // varsayılan: PROD
 ```
 
@@ -176,6 +188,20 @@ Oturum kapatma.
 | --- | --- | --- |
 | `jfatura.environment` | `PROD` | `PROD` veya `TEST` ortamı |
 | `jfatura.base-url` | — | Ortam URL'sini geçersiz kılmak için (opsiyonel) |
+| `jfatura.connect-timeout` | `15s` | Bağlantı zaman aşımı (yalnızca varsayılan transport; dış RestClient.Builder varsa geçersiz) |
+| `jfatura.read-timeout` | `30s` | Okuma zaman aşımı (aynı koşul) |
+| `jfatura.login-retry.max-attempts` | `1` | Oturum kilidi ("birden fazla giriş"/"Güvenli Çıkış") hatalarında deneme sayısı |
+| `jfatura.login-retry.delay` | `3s` | Denemeler arası bekleme |
+| `jfatura.token-cache.enabled` | `false` | Kimlik bazlı token önbelleği (logout'ta temizlenir) |
+| `jfatura.token-cache.ttl` | `30m` | Önbellekteki token'ın ömrü |
+
+## Hata sınıfları
+
+```
+GibApiException            → genel dispatch hataları (getErrorCode() GİB'in ham "error" değeri)
+├── GibAuthException       → assos-login hataları (parola hatalı, oturum kilidi…)
+└── GibDraftException      → taslak oluşturma reddi (GİB'in serbest metni mesajdır)
+```
 
 ## Geliştirme
 
@@ -187,6 +213,18 @@ GIB_TEST_USER=... GIB_TEST_PASS=... ./mvnw verify   # canlı GİB TEST hesabıyl
 ```
 
 Integration testleri gerçek **GİB TEST portalına** bağlanır (`earsivportaltest.efatura.gov.tr`); giriş başarısız olursa veya `CI=true` ise otomatik atlanır. Kamuya açık test hesabı: `33333301` / `1`.
+
+Gece koşusu: `.github/workflows/integration.yml` her gün 03:00 UTC'de canlı portalı dener;
+GitHub'ın otomatik `CI=true` değerini bypass etmek için `JFATURA_IT_RUN=true` set edilir.
+Kendi hesabınızı kullanmak için repo secret'larına `GIB_TEST_USER` / `GIB_TEST_PASS` ekleyin.
+
+## Yayınlama (bakım notu)
+
+Maven Central'a yayın için:
+1. [central.sonatype.com](https://central.sonatype.com) üzerinde `io.github.mehmetfiskindal` namespace'ini GitHub hesabınızla doğrulayın (zorunlu ön şart).
+2. Bir **User Token** üretip repo secret'larına `CENTRAL_USERNAME` / `CENTRAL_TOKEN` olarak ekleyin.
+3. Bir GPG anahtarı üretip public kısmını keyserver'a gönderin; secret'lara `GPG_PRIVATE_KEY` (ASCII armored) ve `GPG_PASSPHRASE` olarak ekleyin.
+4. GitHub'da release oluşturun — `release.yml` testleri koşturup imzalı artifact'ları Central'a gönderir (`-Prelease deploy`).
 
 ## Lisans
 

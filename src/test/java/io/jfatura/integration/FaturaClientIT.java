@@ -41,10 +41,17 @@ import org.junit.jupiter.api.Timeout;
 @DisplayName("FaturaClient — Integration (GİB TEST env)")
 class FaturaClientIT {
 
-    private static final String GIB_USER =
-            System.getenv().getOrDefault("GIB_TEST_USER", "33333301");
-    private static final String GIB_PASS =
-            System.getenv().getOrDefault("GIB_TEST_PASS", "1");
+    private static final String GIB_USER = System.getenv().getOrDefault("GIB_TEST_USER", "33333301");
+    private static final String GIB_PASS = System.getenv().getOrDefault("GIB_TEST_PASS", "1");
+
+    /**
+     * GitHub Actions otomatik {@code CI=true} set eder; gece koşusu
+     * (integration.yml) bu bayrakla atlamayı bypass eder.
+     */
+    private static boolean skippedInCi() {
+        return "true".equalsIgnoreCase(System.getenv("CI"))
+                && !"true".equalsIgnoreCase(System.getenv("JFATURA_IT_RUN"));
+    }
 
     private FaturaClient client;
     private String token;
@@ -52,14 +59,15 @@ class FaturaClientIT {
 
     @BeforeAll
     void login() {
-        assumeFalse("true".equalsIgnoreCase(System.getenv("CI")), "CI ortamında integration testleri atlanır");
+        assumeFalse(skippedInCi(), "CI ortamında integration testleri atlanır (JFATURA_IT_RUN=true ile koşulur)");
         client = new FaturaClient(Environment.TEST);
         try {
             token = getTokenWithRetry();
         } catch (Exception err) {
             tokenAvailable = false;
             System.out.println("\n⚠ Integration testleri ATLANDI — GİB TEST girişi başarısız: " + err.getMessage());
-            System.out.println("  Kamu hesabı başka biri tarafından kullanılıyorsa birkaç dakika bekleyip tekrar deneyin.\n");
+            System.out.println(
+                    "  Kamu hesabı başka biri tarafından kullanılıyorsa birkaç dakika bekleyip tekrar deneyin.\n");
         }
         assumeTrue(tokenAvailable, "GİB TEST oturumu açılamadı — atlandı");
     }
@@ -162,8 +170,8 @@ class FaturaClientIT {
     @Timeout(30)
     @DisplayName("getAllInvoicesByDateRange returns an array for today's date range")
     void queryToday() {
-        List<?> invoices = client.getAllInvoicesByDateRange(token,
-                new io.jfatura.model.DateRange(todayGib(), todayGib()));
+        List<?> invoices =
+                client.getAllInvoicesByDateRange(token, new io.jfatura.model.DateRange(todayGib(), todayGib()));
         assertThat(invoices).isNotNull();
     }
 
@@ -171,8 +179,8 @@ class FaturaClientIT {
     @Timeout(30)
     @DisplayName("getAllInvoicesByDateRange returns an array for a broader range")
     void queryBroadRange() {
-        List<?> invoices = client.getAllInvoicesByDateRange(token,
-                new io.jfatura.model.DateRange("01/01/2024", todayGib()));
+        List<?> invoices =
+                client.getAllInvoicesByDateRange(token, new io.jfatura.model.DateRange("01/01/2024", todayGib()));
         assertThat(invoices).isNotNull();
     }
 
@@ -181,14 +189,14 @@ class FaturaClientIT {
     @DisplayName("getAllInvoicesIssuedToMeByDateRange returns an array or throws a GİB permission error")
     void issuedToMe() {
         try {
-            List<?> invoices = client.getAllInvoicesIssuedToMeByDateRange(token,
-                    new io.jfatura.model.DateRange(todayGib(), todayGib()));
+            List<?> invoices = client.getAllInvoicesIssuedToMeByDateRange(
+                    token, new io.jfatura.model.DateRange(todayGib(), todayGib()));
             assertThat(invoices).isNotNull();
         } catch (GibApiException err) {
             // Kamu test hesabının bu endpoint'e yetkisi/verisi olmayabilir.
             // Hesabınızda veri varsa array döner; yoksa hata fırlatır — ikisi de kabul edilir.
-            System.out.println("  ↳ getAllInvoicesIssuedToMeByDateRange: " + err.getMessage()
-                    + " (hesap yetersiz — beklenen)");
+            System.out.println(
+                    "  ↳ getAllInvoicesIssuedToMeByDateRange: " + err.getMessage() + " (hesap yetersiz — beklenen)");
         }
     }
 
@@ -214,7 +222,8 @@ class FaturaClientIT {
         DraftInvoice draft = client.createDraftInvoice(token, makeInvoice());
         String url = client.getDownloadURL(token, draft.uuid(), false);
 
-        assertThat(url).startsWith("https://")
+        assertThat(url)
+                .startsWith("https://")
                 .contains(draft.uuid())
                 .contains(token)
                 .contains("belgeTip=FATURA");
@@ -256,9 +265,9 @@ class FaturaClientIT {
             var signedFound = client.findInvoice(token, draft);
             assertThat(signedFound).isPresent();
 
-            var cancelResult = client.cancelDraftInvoice(
-                    token, "Integration test — otomatik iptal", signedFound.orElseThrow());
-            assertThat(cancelResult).isNotNull();
+            var cancelResult =
+                    client.cancelDraftInvoice(token, "Integration test — otomatik iptal", signedFound.orElseThrow());
+            assertThat(cancelResult).isNotEmpty();
         } catch (GibApiException err) {
             String msg = err.getMessage() == null ? "" : err.getMessage();
             boolean permissionError = msg.contains("yetkiniz yok") || msg.contains("yetki") || msg.contains("HSM");
@@ -277,8 +286,8 @@ class FaturaClientIT {
     @DisplayName("logout completes without throwing and returns a response")
     void logoutCompletes() {
         var result = client.logout(token);
-        // GİB { data: { redirectUrl: "login.html" } } döndürür
-        assertThat(result).isNotNull();
+        // GİB { data: { redirectUrl: "login.html" } } veya düz string döndürür
+        assertThat(result.raw()).isNotNull();
         token = null; // afterAll tekrar çağırmasın
     }
 }
