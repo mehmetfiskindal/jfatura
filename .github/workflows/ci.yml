@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       CI: "true" # integration testleri canlı GİB'e bağlanmadan atlar
     steps:
