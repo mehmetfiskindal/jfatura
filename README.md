@@ -218,13 +218,6 @@ Gece koşusu: `.github/workflows/integration.yml` her gün 03:00 UTC'de canlı p
 GitHub'ın otomatik `CI=true` değerini bypass etmek için `JFATURA_IT_RUN=true` set edilir.
 Kendi hesabınızı kullanmak için repo secret'larına `GIB_TEST_USER` / `GIB_TEST_PASS` ekleyin.
 
-## Yayınlama (bakım notu)
-
-Maven Central'a yayın için:
-1. [central.sonatype.com](https://central.sonatype.com) üzerinde `io.github.mehmetfiskindal` namespace'ini GitHub hesabınızla doğrulayın (zorunlu ön şart).
-2. Bir **User Token** üretip repo secret'larına `CENTRAL_USERNAME` / `CENTRAL_TOKEN` olarak ekleyin.
-3. Bir GPG anahtarı üretip public kısmını keyserver'a gönderin; secret'lara `GPG_PRIVATE_KEY` (ASCII armored) ve `GPG_PASSPHRASE` olarak ekleyin.
-4. GitHub'da release oluşturun — `release.yml` testleri koşturup imzalı artifact'ları Central'a gönderir (`-Prelease deploy`).
 
 ## Lisans
 
