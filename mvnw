@@ -191,13 +191,27 @@ case "${MVNW_PASSWORD:+has-password}" in
 has-password) [ -n "${MVNW_USERNAME-}" ] || MVNW_USERNAME='' MVNW_PASSWORD='' ;;
 esac
 
+download_success=false
+
 if [ -z "${MVNW_USERNAME-}" ] && command -v wget >/dev/null; then
   verbose "Found wget ... using wget"
-  wget ${__MVNW_QUIET_WGET:+"$__MVNW_QUIET_WGET"} "$distributionUrl" -O "$TMP_DOWNLOAD_DIR/$distributionUrlName" || die "wget: Failed to fetch $distributionUrl"
-elif [ -z "${MVNW_USERNAME-}" ] && command -v curl >/dev/null; then
+  if wget ${__MVNW_QUIET_WGET:+"$__MVNW_QUIET_WGET"} --tries=3 "$distributionUrl" -O "$TMP_DOWNLOAD_DIR/$distributionUrlName"; then
+    download_success=true
+  else
+    verbose "wget failed, trying alternatives"
+  fi
+fi
+
+if [ "$download_success" != true ] && [ -z "${MVNW_USERNAME-}" ] && command -v curl >/dev/null; then
   verbose "Found curl ... using curl"
-  curl ${__MVNW_QUIET_CURL:+"$__MVNW_QUIET_CURL"} -f -L -o "$TMP_DOWNLOAD_DIR/$distributionUrlName" "$distributionUrl" || die "curl: Failed to fetch $distributionUrl"
-elif set_java_home; then
+  if curl ${__MVNW_QUIET_CURL:+"$__MVNW_QUIET_CURL"} --retry 3 -f -L -o "$TMP_DOWNLOAD_DIR/$distributionUrlName" "$distributionUrl"; then
+    download_success=true
+  else
+    verbose "curl failed, trying alternatives"
+  fi
+fi
+
+if [ "$download_success" != true ] && set_java_home; then
   verbose "Falling back to use Java to download"
   javaSource="$TMP_DOWNLOAD_DIR/Downloader.java"
   targetZip="$TMP_DOWNLOAD_DIR/$distributionUrlName"
@@ -220,6 +234,11 @@ elif set_java_home; then
   "$(native_path "$JAVACCMD")" "$(native_path "$javaSource")" || die "Failed to compile Downloader.java"
   verbose " - Running Downloader.java ..."
   "$(native_path "$JAVACMD")" -cp "$(native_path "$TMP_DOWNLOAD_DIR")" Downloader "$distributionUrl" "$(native_path "$targetZip")"
+  download_success=true
+fi
+
+if [ "$download_success" != true ]; then
+  die "Failed to fetch $distributionUrl"
 fi
 
 # If specified, validate the SHA-256 sum of the Maven distribution zip file
